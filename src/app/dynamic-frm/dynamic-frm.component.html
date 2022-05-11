@@ -1,0 +1,34 @@
+<div class="container col-md-6 col-md-offset-3 card mt-2 cardBG" *ngIf = "isJsonSubmit">
+    <form class="px-2 py-2" [formGroup]="dynamicFrm" (ngSubmit)="onSubmit(dynamicFrm)">
+              <div class="col-md-12 form-group" *ngFor="let item of formsData; let i = index">
+                <div *ngIf = "(item.type=='number' || item.type=='date' || item.type=='text')">
+                  <label for="">{{item.label}}</label>
+                  <input type="{{item.type}}" class="form-control" id="{{item.key}}" formControlName="{{item.key}}" [readonly]="item.isReadonly" [placeholder] = "item.unit?item.unit:''">
+                  <span class="text-danger" *ngIf = "dynamicFrm.controls[item.key].invalid && formIsSubmit">This Field is required</span>
+                </div>
+
+                <div *ngIf = "(item.type=='dropdown')">
+                  <label for="">{{item.label}}</label>
+                  <select class="form-control" id="{{item.key}}" formControlName="{{item.key}}" >
+                    <option *ngFor="let option of item.items" [ngValue]="option.value">{{option.text}}</option>
+                </select>
+                  <span class="text-danger" *ngIf = "dynamicFrm.controls[item.key].invalid && formIsSubmit">This Field is required</span>
+                </div>
+              </div>
+              <br>
+              <br>
+        <button type="submit" name="submit" class="btn btn-primary" >Submit</button>
+    </form>
+</div>
+<div class="container col-md-6 col-md-offset-3 card mt-2 cardBG" *ngIf = "!isJsonSubmit">
+  <form class="px-2 py-2" [formGroup]="submitJson" (ngSubmit)="onSubmitJson(submitJson)">
+            <div class="col-md-12 form-group">
+              <label for="">Submit Json*</label>
+              <input type="file" class="form-control" id="jsonFile" formControlName="jsonFile" (change)="fileChanged($event)">
+            </div>
+            <br>
+            <br>
+      <button type="submit" name="submit" class="btn btn-primary" >Submit</button>
+  </form>
+</div>
+
